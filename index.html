@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>メールレッスン 月次アンケート | IOB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green-dark:  #2d5a3d;
+      --green-mid:   #4a7c59;
+      --green-light: #7aaa8a;
+      --green-pale:  #e8f2eb;
+      --beige:       #f7f4ef;
+      --cream:       #fdfcf9;
+      --gold:        #c9a84c;
+      --gold-light:  #e8d5a0;
+      --text-dark:   #1a2e22;
+      --text-mid:    #4a5e52;
+      --text-light:  #8a9e92;
+      --white:       #ffffff;
+      --shadow-sm:   0 2px 12px rgba(45,90,61,0.08);
+      --shadow-md:   0 8px 32px rgba(45,90,61,0.12);
+      --radius-sm:   8px;
+      --radius-md:   16px;
+      --radius-lg:   24px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: var(--beige);
+      color: var(--text-dark);
+      min-height: 100vh;
+    }
+
+    /* ─── ヘッダー ─── */
+    header {
+      background: var(--green-dark);
+      padding: 28px 24px 24px;
+      text-align: center;
+    }
+    header .logo-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      color: var(--gold-light);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    header h1 {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--white);
+      letter-spacing: 0.05em;
+    }
+    header .subtitle {
+      font-size: 12px;
+      color: var(--green-light);
+      margin-top: 6px;
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── メインコンテナ ─── */
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    /* ─── イントロカード ─── */
+    .intro-card {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      padding: 28px 32px;
+      margin-bottom: 28px;
+      box-shadow: var(--shadow-sm);
+      border-left: 4px solid var(--gold);
+    }
+    .intro-card p {
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--text-mid);
+    }
+    .intro-card .time-badge {
+      display: inline-block;
+      background: var(--green-pale);
+      color: var(--green-dark);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+
+    /* ─── セクション ─── */
+    .section {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      padding: 28px 32px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .section-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--green-dark);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--green-pale);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-title .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background: var(--green-dark);
+      color: var(--white);
+      border-radius: 50%;
+      font-size: 11px;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ─── フォームパーツ ─── */
+    .form-group {
+      margin-bottom: 22px;
+    }
+    .form-group:last-child { margin-bottom: 0; }
+
+    label.q-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+    label.q-label .optional {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-light);
+      margin-left: 6px;
+    }
+    label.q-label .required {
+      font-size: 11px;
+      color: #c0392b;
+      margin-left: 4px;
+    }
+
+    /* テキスト入力 */
+    input[type="text"],
+    input[type="email"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid #d0dbd4;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-family: 'Noto Sans JP', sans-serif;
+      color: var(--text-dark);
+      background: var(--cream);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--green-mid);
+      box-shadow: 0 0 0 3px rgba(74,124,89,0.12);
+      background: var(--white);
+    }
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+      line-height: 1.7;
+    }
+    select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234a7c59' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+
+    /* ラジオ・チェックボックス カード */
+    .radio-group,
+    .check-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .radio-group.horizontal,
+    .check-group.horizontal {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .choice-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border: 1.5px solid #d0dbd4;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      font-size: 14px;
+      color: var(--text-dark);
+      line-height: 1.5;
+      user-select: none;
+    }
+    .choice-card:hover {
+      border-color: var(--green-light);
+      background: var(--green-pale);
+    }
+    .choice-card input[type="radio"],
+    .choice-card input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--green-dark);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .choice-card.selected {
+      border-color: var(--green-dark);
+      background: var(--green-pale);
+      font-weight: 500;
+    }
+
+    /* 水平コンパクト（選択肢が短い場合） */
+    .radio-group.horizontal .choice-card {
+      flex: 1;
+      min-width: 120px;
+      justify-content: center;
+      text-align: center;
+      flex-direction: column;
+      gap: 4px;
+      padding: 14px 10px;
+    }
+    .radio-group.horizontal .choice-card input {
+      margin: 0;
+    }
+
+    /* 星評価 */
+    .star-rating {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .star-rating input[type="radio"] {
+      display: none;
+    }
+    .star-rating label {
+      font-size: 32px;
+      color: #d0dbd4;
+      cursor: pointer;
+      transition: color 0.15s, transform 0.1s;
+      line-height: 1;
+    }
+    .star-rating label:hover,
+    .star-rating label:hover ~ label,
+    .star-rating input:checked ~ label {
+      color: var(--gold);
+    }
+    .star-rating:hover label { color: var(--gold-light); }
+    .star-rating label:hover,
+    .star-rating label:hover ~ label { color: var(--gold); }
+    .star-rating .star-hint {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-left: 8px;
+    }
+
+    /* スライダー（NPS） */
+    .nps-wrap {
+      padding: 8px 0;
+    }
+    .nps-scale {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+    .nps-btn {
+      flex: 1;
+      padding: 10px 0;
+      border: 1.5px solid #d0dbd4;
+      border-radius: 6px;
+      background: var(--cream);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-mid);
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .nps-btn:hover { border-color: var(--green-light); background: var(--green-pale); }
+    .nps-btn.active {
+      background: var(--green-dark);
+      color: var(--white);
+      border-color: var(--green-dark);
+    }
+    .nps-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-light);
+    }
+
+    /* 区切り */
+    .divider {
+      height: 1px;
+      background: var(--green-pale);
+      margin: 20px 0;
+    }
+
+    /* ─── 送信ボタン ─── */
+    .submit-wrap {
+      text-align: center;
+      margin-top: 32px;
+    }
+    .btn-submit {
+      display: inline-block;
+      padding: 16px 48px;
+      background: var(--green-dark);
+      color: var(--white);
+      font-size: 15px;
+      font-weight: 700;
+      font-family: 'Noto Sans JP', sans-serif;
+      letter-spacing: 0.08em;
+      border: none;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+      box-shadow: var(--shadow-md);
+    }
+    .btn-submit:hover {
+      background: var(--green-mid);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+    .btn-submit:active { transform: translateY(0); }
+    .btn-submit:disabled {
+      background: var(--text-light);
+      cursor: not-allowed;
+      transform: none;
+    }
+    .submit-note {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 12px;
+    }
+
+    /* ─── 完了画面 ─── */
+    #done-screen {
+      display: none;
+      text-align: center;
+      padding: 60px 20px;
+    }
+    .done-icon {
+      font-size: 56px;
+      margin-bottom: 20px;
+    }
+    .done-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--green-dark);
+      margin-bottom: 12px;
+    }
+    .done-msg {
+      font-size: 14px;
+      color: var(--text-mid);
+      line-height: 1.9;
+    }
+
+    /* ─── エラー ─── */
+    .error-msg {
+      font-size: 12px;
+      color: #c0392b;
+      margin-top: 6px;
+      display: none;
+    }
+    .has-error input,
+    .has-error select,
+    .has-error textarea {
+      border-color: #c0392b;
+    }
+
+    /* ─── レスポンシブ ─── */
+    @media (max-width: 480px) {
+      .section { padding: 22px 18px; }
+      .intro-card { padding: 20px 18px; }
+      header h1 { font-size: 17px; }
+      .radio-group.horizontal { flex-direction: column; }
+      .nps-btn { font-size: 11px; padding: 8px 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<header>
+  <div class="logo-label">オーガニック専門家認定コース</div>
+  <h1>メールレッスン 月次アンケート</h1>
+  <div class="subtitle">Mail Lesson Monthly Survey</div>
+</header>
+
+<!-- メインフォーム -->
+<div class="container" id="form-area">
+
+  <!-- イントロ -->
+  <div class="intro-card">
+    <div class="time-badge">所要時間：約3〜5分</div>
+    <p>
+      毎月のメールレッスンをより良くするために、ご意見をお聞かせください。<br>
+      いただいた声は翌月のレッスン改善に直接反映します。<br>
+      正直なご回答が、一番のギフトです。
+    </p>
+  </div>
+
+  <form id="survey-form" novalidate>
+
+    <!-- ── セクション1: 基本情報 ── -->
+    <div class="section">
+      <div class="section-title"><span class="num">1</span>基本情報（任意）</div>
+
+      <div class="form-group">
+        <label class="q-label" for="name">お名前<span class="optional">任意</span></label>
+        <input type="text" id="name" name="name" placeholder="例：山田 花子">
+      </div>
+
+      <div class="form-group">
+        <label class="q-label" for="department">部署名<span class="optional">任意</span></label>
+        <input type="text" id="department" name="department" placeholder="例：店頭スタッフ・バックオフィス・管理職 など">
+      </div>
+
+      <div class="form-group">
+        <label class="q-label" for="survey-month">対象月<span class="required">必須</span></label>
+        <select id="survey-month" name="surveyMonth" required>
+          <option value="">── 対象月を選択してください ──</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- ── セクション2: 取り組み状況 ── -->
+    <div class="section">
+      <div class="section-title"><span class="num">2</span>今月の取り組み状況</div>
+
+      <div class="form-group" id="group-readRate">
+        <label class="q-label">今月届いたメール、どのくらい読めましたか？<span class="required">必須</span></label>
+        <div class="radio-group">
+          <label class="choice-card">
+            <input type="radio" name="readRate" value="almost_all"> ほぼ全部読んだ（80%以上）
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="readRate" value="half"> 半分くらい読んだ（40〜79%）
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="readRate" value="little"> あまり読めなかった（40%未満）
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="readRate" value="none"> ほとんど読めなかった
+          </label>
+        </div>
+        <div class="error-msg" id="err-readRate">選択してください</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="form-group" id="group-taskRate">
+        <label class="q-label">今月または先月の課題にはどのくらい取り組めましたか？<span class="required">必須</span><br><span style="font-size:12px;font-weight:400;color:#8a9e92">※課題は週1回・月4回出題されます</span></label>
+        <div class="radio-group">
+          <label class="choice-card">
+            <input type="radio" name="taskRate" value="4of4"> 4回全部取り組んだ（100%）
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="taskRate" value="3of4"> 3回取り組んだ（75%）
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="taskRate" value="2of4"> 2回取り組んだ（50%）
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="taskRate" value="1of4"> 1回だけ取り組んだ（25%）
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="taskRate" value="none"> 取り組めなかった（0%）
+          </label>
+        </div>
+        <div class="error-msg" id="err-taskRate">選択してください</div>
+      </div>
+    </div>
+
+    <!-- ── セクション3: 今月の評価 ── -->
+    <div class="section">
+      <div class="section-title"><span class="num">3</span>今月の評価</div>
+
+      <div class="form-group" id="group-comprehension">
+        <label class="q-label">今月の内容は、どのくらい理解できましたか？<span class="required">必須</span></label>
+        <div class="radio-group">
+          <label class="choice-card">
+            <input type="radio" name="comprehension" value="very_good"> よく理解できた
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="comprehension" value="mostly"> だいたい理解できた
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="comprehension" value="partly"> 少し難しい部分があった
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="comprehension" value="hard"> 難しくて理解が追いつかなかった
+          </label>
+        </div>
+        <div class="error-msg" id="err-comprehension">選択してください</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="form-group">
+        <label class="q-label">今月のメール全体の満足度を教えてください<span class="required">必須</span></label>
+        <div class="star-rating" id="star-rating">
+          <input type="radio" name="satisfaction" id="s5" value="5">
+          <label for="s5" title="5点">★</label>
+          <input type="radio" name="satisfaction" id="s4" value="4">
+          <label for="s4" title="4点">★</label>
+          <input type="radio" name="satisfaction" id="s3" value="3">
+          <label for="s3" title="3点">★</label>
+          <input type="radio" name="satisfaction" id="s2" value="2">
+          <label for="s2" title="2点">★</label>
+          <input type="radio" name="satisfaction" id="s1" value="1">
+          <label for="s1" title="1点">★</label>
+          <span class="star-hint" id="star-hint">クリックして選択</span>
+        </div>
+        <div class="error-msg" id="err-satisfaction">選択してください</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="form-group" id="group-volume">
+        <label class="q-label">メールの配信ペースと1通あたりの量は適切でしたか？<span class="required">必須</span></label>
+        <div class="radio-group horizontal">
+          <label class="choice-card">
+            <input type="radio" name="volume" value="just_right"> ちょうどいい
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="volume" value="too_much"> 多い・長い
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="volume" value="too_few"> 少ない・短い
+          </label>
+        </div>
+        <div class="error-msg" id="err-volume">選択してください</div>
+      </div>
+    </div>
+
+    <!-- ── セクション4: ひとこと ── -->
+    <div class="section">
+      <div class="section-title"><span class="num">4</span>ひとこと</div>
+
+      <div class="form-group">
+        <label class="q-label" for="improvement">今月の感想・気づいたこと・改善してほしいことを自由に教えてください<span class="optional">任意</span></label>
+        <textarea id="improvement" name="improvement" placeholder="例：&#13;&#10;・「洗えば農薬は落ちる？」の回がお客様の質問にすぐ使えた&#13;&#10;・POPsの説明が少し難しかった&#13;&#10;・もっとドイツの事例が聞きたい" rows="5"></textarea>
+      </div>
+    </div>
+
+    <!-- 送信 -->
+    <div class="submit-wrap">
+      <button type="submit" class="btn-submit" id="btn-submit">回答を送信する</button>
+      <p class="submit-note">回答は匿名で処理されます。送信後の修正はできませんのでご確認の上ご送信ください。</p>
+    </div>
+
+  </form>
+
+  <!-- 完了メッセージ -->
+  <div id="done-screen">
+    <div class="done-icon">🌿</div>
+    <div class="done-title">ありがとうございます！</div>
+    <p class="done-msg">
+      大切なご意見をお届けいただきました。<br>
+      いただいたフィードバックは来月のレッスン改善に反映します。<br><br>
+      引き続きメールレッスンをよろしくお願いします。
+    </p>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ── 月セレクト生成（2026年5月〜2027年5月、2026年12月除く）──
+(function () {
+  const sel = document.getElementById('survey-month');
+  const now = new Date();
+
+  // 対象月リスト（固定）：2026/5〜2027/5、12月除く
+  const months = [
+    '2026-05','2026-06','2026-07','2026-08','2026-09','2026-10','2026-11',
+    /* 2026-12 はメール配信なしのため除外 */
+    '2027-01','2027-02','2027-03','2027-04','2027-05'
+  ];
+
+  // 全月を表示（プログラム期間中は常に全選択肢を出す）
+  const nowKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+
+  months.forEach(val => {
+    const [y, m] = val.split('-');
+    const opt = document.createElement('option');
+    opt.value = val;
+    opt.textContent = `${y}年${parseInt(m)}月`;
+    sel.appendChild(opt);
+  });
+
+  // 直近の過去月をデフォルト選択（なければ先頭）
+  const pastMonths = months.filter(val => val <= nowKey);
+  const defaultVal = pastMonths.length > 0
+    ? pastMonths[pastMonths.length - 1]
+    : months[0];
+  sel.value = defaultVal;
+})();
+
+// ── 星評価ヒント ──
+(function () {
+  const hints = ['', 'もう少し改善が必要', 'まあまあ', '良かった', 'とても良かった', '最高でした！'];
+  document.querySelectorAll('.star-rating input').forEach(inp => {
+    inp.addEventListener('change', () => {
+      document.getElementById('star-hint').textContent = hints[inp.value] || '';
+      document.getElementById('err-satisfaction').style.display = 'none';
+    });
+  });
+})();
+
+// ── 選択時のスタイル ──
+document.querySelectorAll('.choice-card').forEach(card => {
+  const inp = card.querySelector('input');
+  inp.addEventListener('change', () => {
+    if (inp.type === 'radio') {
+      const name = inp.name;
+      document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+        r.closest('.choice-card').classList.remove('selected');
+      });
+      const errEl = document.getElementById(`err-${name}`);
+      if (errEl) errEl.style.display = 'none';
+    }
+    card.classList.toggle('selected', inp.checked);
+
+    // 「その他」テキスト欄の表示切り替え
+    if (inp.name === 'readTime') {
+      const wrap = document.getElementById('readTime-other-wrap');
+      if (wrap) wrap.style.display = inp.value === 'other' ? 'block' : 'none';
+    }
+  });
+});
+
+// ── バリデーション ──
+const requiredRadios = ['readRate','taskRate','comprehension','satisfaction','volume'];
+
+function validate() {
+  let ok = true;
+
+  // 対象月
+  const month = document.getElementById('survey-month').value;
+  if (!month) {
+    document.getElementById('survey-month').style.borderColor = '#c0392b';
+    ok = false;
+  }
+
+  // ラジオ
+  requiredRadios.forEach(name => {
+    const checked = document.querySelector(`input[name="${name}"]:checked`);
+    const errEl = document.getElementById(`err-${name}`);
+    if (!checked) {
+      if (errEl) errEl.style.display = 'block';
+      ok = false;
+    }
+  });
+
+  return ok;
+}
+
+// ── 送信 ──
+document.getElementById('survey-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!validate()) {
+    // 最初のエラーまでスクロール
+    const firstErr = document.querySelector('.error-msg[style*="block"], input[style*="c0392b"]');
+    if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.textContent = '送信中...';
+
+  const data = {
+    name:          document.getElementById('name').value.trim(),
+    department:    document.getElementById('department').value.trim(),
+    surveyMonth:   document.getElementById('survey-month').value,
+    readRate:      document.querySelector('input[name="readRate"]:checked')?.value,
+    taskRate:      document.querySelector('input[name="taskRate"]:checked')?.value,
+    comprehension: document.querySelector('input[name="comprehension"]:checked')?.value,
+    satisfaction:  parseInt(document.querySelector('input[name="satisfaction"]:checked')?.value),
+    volume:        document.querySelector('input[name="volume"]:checked')?.value,
+    improvement:   document.getElementById('improvement').value.trim(),
+    // 半年版アンケート用フィールド（月次では未使用）
+    interest: '', length: '', readTime: '', bestTopic: '', hardTopic: '',
+    practical: '', wantMore: '', nps: null, praise: '',
+  };
+
+  try {
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbyJSjXSqa02w4QJ_-fDvy40Z4WOLD97FdEgndu_dygLWvbTGOd_-wpAwhZim353pNmy/exec';
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+    const result = await res.json();
+    if (!result.ok) throw new Error('server error');
+
+    document.getElementById('form-area').querySelector('form').style.display = 'none';
+    document.querySelector('.intro-card').style.display = 'none';
+    document.getElementById('done-screen').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = '回答を送信する';
+    alert('送信中にエラーが発生しました。もう一度お試しください。');
+  }
+});
+</script>
+</body>
+</html>
