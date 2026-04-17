@@ -721,33 +721,16 @@ document.getElementById('survey-form').addEventListener('submit', async (e) => {
   try {
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbyJSjXSqa02w4QJ_-fDvy40Z4WOLD97FdEgndu_dygLWvbTGOd_-wpAwhZim353pNmy/exec';
 
-    // 隠しiframe経由で送信（CORS回避）
-    let iframe = document.getElementById('hidden-iframe');
-    if (!iframe) {
-      iframe = document.createElement('iframe');
-      iframe.id = 'hidden-iframe';
-      iframe.name = 'hidden-iframe';
-      iframe.style.display = 'none';
-      document.body.appendChild(iframe);
-    }
-
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = GAS_URL;
-    form.target = 'hidden-iframe';
-    form.style.display = 'none';
-
+    // GETリクエスト＋URLパラメータで送信（CORS回避）
+    const params = new URLSearchParams();
     Object.entries(data).forEach(([key, val]) => {
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = key;
-      input.value = (val === null || val === undefined) ? '' : val;
-      form.appendChild(input);
+      params.append(key, (val === null || val === undefined) ? '' : val);
     });
 
-    document.body.appendChild(form);
-    form.submit();
-    document.body.removeChild(form);
+    await fetch(GAS_URL + '?' + params.toString(), {
+      method: 'GET',
+      mode: 'no-cors'
+    });
 
     // 完了画面を表示
     document.getElementById('form-area').querySelector('form').style.display = 'none';
