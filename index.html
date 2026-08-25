@@ -518,7 +518,7 @@
       <div class="divider"></div>
 
       <div class="form-group" id="group-taskRate">
-        <label class="q-label">今月または先月の課題にはどのくらい取り組めましたか？<span class="required">必須</span><br><span style="font-size:12px;font-weight:400;color:#8a9e92">※課題は週1回・月4回出題されます</span></label>
+        <label class="q-label">今月の課題にはどのくらい取り組めましたか？<span class="required">必須</span><br><span style="font-size:12px;font-weight:400;color:#8a9e92">※課題は週1回・月4回出題されます</span></label>
         <div class="radio-group">
           <label class="choice-card">
             <input type="radio" name="taskRate" value="4of4"> 4回全部取り組んだ（100%）
@@ -537,6 +537,11 @@
           </label>
         </div>
         <div class="error-msg" id="err-taskRate">選択してください</div>
+      </div>
+      <div class="form-group" id="group-taskRate-none" style="display:none">
+        <p style="font-size:13px;color:var(--text-light);line-height:1.7">
+          🌱 この月はアウトプット課題の実施月ではありません（課題は6月・8月・10月・1月・3月・5月に実施しています）。この設問はスキップされます。
+        </p>
       </div>
     </div>
 
@@ -663,6 +668,29 @@
     ? pastMonths[pastMonths.length - 1]
     : months[0];
   sel.value = defaultVal;
+
+  window.dispatchEvent(new Event('survey-month-init'));
+})();
+
+// ── アウトプット課題の設問は実施月のみ表示（6/8/10月・1/3/5月）──
+(function () {
+  const OUTPUT_MONTHS = ['2026-06', '2026-08', '2026-10', '2027-01', '2027-03', '2027-05'];
+  const sel = document.getElementById('survey-month');
+  const groupOn = document.getElementById('group-taskRate');
+  const groupOff = document.getElementById('group-taskRate-none');
+
+  function applyVisibility() {
+    const isOutputMonth = OUTPUT_MONTHS.includes(sel.value);
+    groupOn.style.display = isOutputMonth ? '' : 'none';
+    groupOff.style.display = isOutputMonth ? 'none' : '';
+    if (!isOutputMonth) {
+      document.querySelectorAll('input[name="taskRate"]:checked').forEach(r => r.checked = false);
+      document.getElementById('err-taskRate').style.display = 'none';
+    }
+  }
+
+  sel.addEventListener('change', applyVisibility);
+  window.addEventListener('survey-month-init', applyVisibility);
 })();
 
 // ── 星評価ヒント ──
@@ -711,8 +739,11 @@ function validate() {
     ok = false;
   }
 
-  // ラジオ
+  // ラジオ（taskRateはアウトプット課題実施月のみ必須）
   requiredRadios.forEach(name => {
+    if (name === 'taskRate' && document.getElementById('group-taskRate').style.display === 'none') {
+      return;
+    }
     const checked = document.querySelector(`input[name="${name}"]:checked`);
     const errEl = document.getElementById(`err-${name}`);
     if (!checked) {
